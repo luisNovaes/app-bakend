@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.luisnovaes.backend.domain.Categoria;
 import com.luisnovaes.backend.domain.Cidade;
+import com.luisnovaes.backend.domain.Cliente;
+import com.luisnovaes.backend.domain.Endereco;
 import com.luisnovaes.backend.domain.Estado;
 import com.luisnovaes.backend.domain.Produto;
+import com.luisnovaes.backend.domain.enums.TipoCliente;
 import com.luisnovaes.backend.repositorys.CategoriaRepository;
 import com.luisnovaes.backend.repositorys.CidadeRepository;
+import com.luisnovaes.backend.repositorys.ClienteRepository;
+import com.luisnovaes.backend.repositorys.EnderecoRepository;
 import com.luisnovaes.backend.repositorys.EstadoRepository;
 import com.luisnovaes.backend.repositorys.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class BackendApplication implements CommandLineRunner {
 	private EstadoRepository estadoRepository;
 	@Autowired
 	private CidadeRepository cidadeRepositor;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(BackendApplication.class, args);
@@ -64,6 +73,17 @@ public class BackendApplication implements CommandLineRunner {
 
 		estadoRepository.saveAll(Arrays.asList(est1, est2));
 		cidadeRepositor.saveAll(Arrays.asList(c1, c2, c3));
+
+		Cliente cli1 = new Cliente(null, "Maria Silva", "mariagmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+
+		Endereco e1 = new Endereco(null, "Rua das FLores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 
 	}
 
